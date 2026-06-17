@@ -1,4 +1,4 @@
-# ☁️ Cloud Migration Readiness Framework
+# Cloud Migration Readiness Framework
 
 ![Cloud](https://img.shields.io/badge/Cloud-GCP%20%7C%20AWS-orange)
 ![Scale](https://img.shields.io/badge/Scale-Enterprise-blue)
@@ -6,93 +6,67 @@
 ![Governance](https://img.shields.io/badge/Governance-Framework-green)
 ![Outcome](https://img.shields.io/badge/Outcome-Go--Live%20Ready-success)
 
-A centralized framework designed to track dependencies, approvals, and readiness across large-scale cloud migration programs.
+A centralized framework to track dependencies, approvals, and readiness across large-scale cloud migration programs. This repo ships the **actual artifacts**, not just a description: a readiness tracker, a dependency RACI, and a go/no-go checklist you can adapt.
+
+> Based on real migration programs. Example rows in the tracker and RACI are illustrative placeholders, not real program data.
 
 ---
 
-## 🧩 The Problem
-Enterprise cloud migrations involve dozens of interdependent components across platform, security, networking, and application teams. Lack of visibility into readiness leads to delays, misaligned execution, and increased go-live risk. Teams often operate in silos, resulting in reactive firefighting and missed timelines.
+## The problem
 
----
+Enterprise migrations involve dozens of interdependent components across platform, security, networking, and application teams. Without shared visibility into readiness, teams operate in silos, blockers surface late, and go-live risk compounds into missed timelines and reactive firefighting.
 
-## 💡 The Solution
-Built a centralized readiness and dependency tracking framework that provides visibility into approvals, Terraform maturity, and cross-team dependencies. The framework prioritizes critical path components and enables structured governance to ensure predictable, low-risk migration execution.
+## The solution
 
----
+A lightweight, centralized readiness and dependency model. It maps every component to its owner, dependencies, approval status, and Terraform maturity, prioritizes the critical path, and runs structured go/no-go governance so execution is predictable and low-risk.
 
-## 🏗️ Architecture
+## Architecture
+
+```mermaid
+flowchart TD
+    TPM[Migration program - TPM] --> TR[Central readiness tracker<br/>dependencies - approvals - status]
+    TR --> PLT[Platform teams<br/>GKE - networking]
+    TR --> SEC[Security / IAM<br/>compliance]
+    PLT --> CICD[CI/CD and infra<br/>Terraform]
+    SEC --> APP[Application teams]
+    CICD --> GNG{Go / No-Go review}
+    APP --> GNG
+    GNG -->|go| LIVE[Go-live]
+    GNG -->|no-go| TR
 ```
 
-```
-             ┌────────────────────────────┐
-             │   Migration Program (TPM)  │
-             └────────────┬───────────────┘
-                          │
-    ┌─────────────────────▼─────────────────────┐
-    │        Central Readiness Tracker          │
-    │  (Dependencies • Approvals • Status)      │
-    └────────────┬───────────────┬─────────────┘
-                 │               │
-    ┌────────────▼──────┐ ┌──────▼────────────┐
-    │ Platform Teams     │ │ Security / IAM    │
-    │ (GKE, Networking)  │ │ Compliance        │
-    └────────────┬──────┘ └──────┬────────────┘
-                 │               │
-         ┌───────▼────────┐ ┌────▼──────────┐
-         │ CI/CD & Infra  │ │ Application    │
-         │ Terraform      │ │ Teams          │
-         └────────────────┘ └───────────────┘
-```
+## How it works
 
-```
+Each component is mapped to dependencies, approval status, and readiness level. The tracker aggregates inputs across teams and surfaces critical-path blockers. Governance checkpoints align platform, security, and application teams and force explicit go/no-go decisions before cutover.
 
----
+## Artifacts in this repo
 
-## 🎬 Demo
-The framework outputs:
-- Centralized readiness dashboard (Approved / Pending / Blocked)  
-- Dependency mapping across teams  
-- Critical path tracking  
-- Go-live readiness status  
+- `templates/readiness-tracker.csv` - per-component readiness, dependencies, approvals, critical-path flag
+- `templates/dependency-raci.md` - responsibility matrix across migration workstreams
+- `templates/go-no-go-checklist.md` - structured pre-cutover decision gate
 
----
+## Tradeoffs and decisions
 
-## 🧪 Example
-Input: Migration program with 40+ dependencies across teams  
-Output: Centralized readiness dashboard with dependency tracking and go-live status  
+**Centralized tracking over decentralized ownership:** improves visibility and speeds decisions, at the cost of a single artifact that must be kept current.
 
----
+**What I would do differently:** automate readiness signals from CI/CD instead of manual status updates, and add predictive risk scoring.
 
-## ⚙️ How It Works
-The framework maps each cloud component (pattern) to its dependencies, approval status, and readiness level. A centralized tracker aggregates inputs across teams and identifies critical path blockers. Governance checkpoints ensure alignment across platform, security, and application teams, enabling proactive risk mitigation and predictable execution.
+## What I learned
 
----
+- Dependency management, not technology, is the true critical path.
+- Transparency drives execution faster than process overhead.
+- Lightweight governance scales better than heavy process.
 
-## ⚖️ Tradeoffs and Decisions
+## Next steps
 
-Why centralized tracking over decentralized ownership:  
-Improves visibility and accelerates decision-making across multiple teams.
+- Automate readiness signals from pipelines
+- Integrate dependency status from CI/CD
+- Add predictive risk scoring
 
-What I'd do differently:  
-Automate dependency tracking using CI/CD integrations instead of manual updates.
+## Built with
 
----
+Jira / tracking systems | Terraform | Cloud platforms
 
-## 🧠 What I Learned
-Dependency management is the true critical path in cloud programs  
-Transparency drives faster execution than process overhead  
-Lightweight governance scales better across organizations  
+## Author
 
----
-
-## 🚀 Next Steps
-Automate readiness tracking  
-Integrate with CI/CD pipelines  
-Add predictive risk scoring  
-
----
-
-## 🛠️ Built With
-JIRA / Tracking Systems  
-Terraform  
-Cloud Platforms  
+**Gaurav Kumar** | [LinkedIn](https://www.linkedin.com/in/gauravkumar2)

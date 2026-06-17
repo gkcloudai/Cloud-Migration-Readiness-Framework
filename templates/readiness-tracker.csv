@@ -1,0 +1,11 @@
+Component,Owner Team,Depends On,Approval Status,Terraform Maturity,Readiness,Critical Path,Notes
+Identity / IAM,Security,-,Approved,Production,Ready,Yes,Baseline for all services
+VPC / Networking,Platform,Identity / IAM,Approved,Production,Ready,Yes,Shared VPC peering complete
+GKE Clusters,Platform,VPC / Networking,Approved,Production,Ready,Yes,Regional clusters provisioned
+Secrets Management,Security,Identity / IAM,Pending,Beta,In Progress,Yes,Awaiting KMS key policy sign-off
+Data Replication,Data,GKE Clusters,Pending,Beta,In Progress,Yes,Blue/green validation underway
+Observability,Platform,GKE Clusters,Approved,Production,Ready,No,Dashboards and alerts live
+App: Auth Service,Application,Secrets Management; Data Replication,Blocked,Alpha,Not Ready,Yes,Blocked on secrets sign-off
+App: Reporting,Application,Observability,Approved,Beta,In Progress,No,Non-critical path
+CI/CD Pipelines,Platform,GKE Clusters,Approved,Production,Ready,No,Promotion gates configured
+DR / Failover,Platform,Data Replication,Pending,Beta,In Progress,Yes,Game-day scheduled
